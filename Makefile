@@ -6,5 +6,6 @@ default:
 clean: 
 	$(MAKE) -f module.mk -C daqd $(MAKEFLAGS) clean
 	$(MAKE) -f module.mk -C aDAQ $(MAKEFLAGS) clean
+	rm DSHM.so
 
 .PHONY: default clean

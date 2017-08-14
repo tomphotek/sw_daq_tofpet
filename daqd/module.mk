@@ -41,6 +41,6 @@ daqd: daqd.cpp.o $(OBJS)
 	$(CXX) -c -o $@ $< $(CXXFLAGS) $(CPPFLAGS) -fPIC
 
 clean: 
-	rm -f daqd *.cpp.o DSHM.so SHM.cpp.o DSHM.cpp.o
+	rm -f daqd *.cpp.o SHM.o DSHM.so SHM.cpp.o DSHM.cpp.o
 
 .PHONY: all headers clean

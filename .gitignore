@@ -4,6 +4,20 @@
 *.cpp.d
 *.cpp.b
 *.so
+*.o
 *_C.d
 
 daqd/daqd
+
+aDAQ/buildCoincidence
+aDAQ/buildGroup
+aDAQ/buildRaw
+aDAQ/buildSingle
+aDAQ/buildSingleToBinary
+aDAQ/buildTQCalibration
+aDAQ/calibrateTDC
+aDAQ/psBuildCoincidence
+aDAQ/psBuildGroup
+aDAQ/psBuildSingle
+aDAQ/txtBuildCoincidence
+aDAQ/writeRaw

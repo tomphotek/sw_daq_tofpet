@@ -255,33 +255,5 @@ private:
 	int16_t m_lut[ 1 << 15 ];
 };
 
-//}
-
-class SHM_TEST {
-    public:
-        SHM_TEST() {};
-
-        std::shared_ptr<PackedEventVec> getRawFrame() {
-            int nevents = 5;
-            std::shared_ptr<PackedEventVec> procFrame(new PackedEventVec());
-
-            for (int i = 0; i < nevents; ++i) {
-                PackedEvent_t p;
-
-                p.tcoarse = i + 1;
-                p.ecoarse = i;
-                p.tfine = i;
-                p.efine = i;
-
-                p.tac_id = i;
-                p.chan_id = i;
-                p.asic_id = i;
-
-                procFrame->push_back(p);
-            }
-
-            return procFrame;
-        }
-};
 }
 #endif

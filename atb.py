@@ -590,12 +590,12 @@ class ATB:
     def getDataFrame(self, nonEmpty=False):
         timeout = 0.5
         t0 = time()
-        r = None
-        while (r is None) and ((time() - t0) < timeout):
+        r_var = None
+        while (r_var is None) and ((time() - t0) < timeout):
             wrPointer, rdPointer = self.__getDataFrameWriteReadPointer()
             # print "WR/RD pointers = %08x %08x" % (wrPointer, rdPointer)
             bs = self.__dshm.getSizeInFrames()
-            while (wrPointer != rdPointer) and (r is None):
+            while (wrPointer != rdPointer) and (r_var is None):
                 index = rdPointer % bs
                 rdPointer = (rdPointer + 1) % (2 * bs)
 
@@ -621,12 +621,41 @@ class ATB:
                                    )
                                   )
 
-                r = {"id": frameID, "lost": frameLost, "events": events}
+                r_var = {"id": frameID, "lost": frameLost, "events": events}
 
             # print "Setting rdPointer to %08x\n" %rdPointer
             self.__setDataFrameReadPointer(rdPointer)
 
-        return r
+        return r_var
+
+    # Returns a data frame read form the shared memory block
+    def getDataFrameNumpy(self, nonEmpty=False):
+        timeout = 0.5
+        t0 = time()
+        r_var = None
+        while (r_var is None) and ((time() - t0) < timeout):
+            wr_pointer, rd_pointer = self.__getDataFrameWriteReadPointer()
+            # print "WR/RD pointers = %08x %08x" % (wr_pointer, rd_pointer)
+            bs = self.__dshm.getSizeInFrames()
+            while (wr_pointer != rd_pointer) and (r_var is None):
+                index = rd_pointer % bs
+                rd_pointer = (rd_pointer + 1) % (2 * bs)
+
+                n_events = self.__dshm.getNEvents(index)
+                if n_events == 0 and nonEmpty:
+                    continue
+
+                frame_id = self.__dshm.getFrameID(index)
+                frame_lost = self.__dshm.getFrameLost(index)
+
+                events = self.__dshm.getNumpyFrame(frame_id)
+
+                r_var = {"id": frame_id, "lost": frame_lost, "events": events}
+
+            # print "Setting rd_pointer to %08x\n" %rd_pointer
+            self.__setDataFrameReadPointer(rd_pointer)
+
+        return r_var
 
     def printDataFrame(self, nonEmpty=False):
         timeout = 0.5
